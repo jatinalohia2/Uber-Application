@@ -18,7 +18,7 @@ public class Driver {
     private Long id;
 
     @OneToOne
-    private User user;
+    private Users users;
 
     private Double rating;
 

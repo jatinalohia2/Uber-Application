@@ -11,6 +11,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Rider {
 
     @Id
@@ -19,11 +20,12 @@ public class Rider {
     private Long id;
 
     @OneToOne
-    private User user;
+    private Users users;
 
     private Double rating;
 
     @OneToMany
+    @ToString.Exclude
     List<Ride> rides;
 
 

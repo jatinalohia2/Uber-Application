@@ -1,6 +1,7 @@
 package com.pisoft.uberApp.UberApplication.dtos;
 
 import com.pisoft.uberApp.UberApplication.entities.Rider;
+import com.pisoft.uberApp.UberApplication.enums.PaymentMethod;
 import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import jakarta.persistence.*;
@@ -16,15 +17,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RideRequestDto {
 
-    Point pickUpLocation;
+    PointDto pickUpLocation;
 
-    Point dropOffLocation;
+    PointDto dropOffLocation;
 
     private LocalDateTime requestedTime;
 
     private RiderDto riderDto;
 
-    private PaymentStatus paymentStatus;
+    private PaymentMethod paymentMethod;
 
     private RideRequestStatus rideRequestStatus;
 }

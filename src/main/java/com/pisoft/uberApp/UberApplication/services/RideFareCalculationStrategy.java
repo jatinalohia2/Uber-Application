@@ -1,10 +1,10 @@
 package com.pisoft.uberApp.UberApplication.services;
 
-import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
+import com.pisoft.uberApp.UberApplication.entities.RideRequest;
 
 public interface RideFareCalculationStrategy {
 
-    Double calculateFare(RideRequestDto rideRequestDto);
+    Double calculateFare(RideRequest rideRequest);
 
 
 }
