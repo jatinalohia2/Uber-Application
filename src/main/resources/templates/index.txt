@@ -1,0 +1,18 @@
+13 November :
+-> entities
+-> services
+-> repository
+-> dtos
+-> config
+-> enums
+-> created all the interface method declaration part
+we have create all these stuff :
+
+-----------------------------------------------------------------
+
+14 November :
+-> Controller for (Auth and Ride Controller)
+-> Request a Ride : we have done this Api , inside this we have implement a lot of stuff like converting
+PointDto to Point , calculate fare , matching the driver who is nearest 1km.
+-> Also we have done SignUp Part -> in this user , rider , wallet we created....
+
