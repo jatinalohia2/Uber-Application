@@ -21,11 +21,11 @@ public class Ride {
     @Column(nullable = false)
     private Long id;
 
-    @Column(columnDefinition = "Geometry(Point , 4326)")
-    Point pickUpLocation;
+    @Column(columnDefinition = "geometry(Point , 4326)")
+    private Point pickUpLocation;
 
-    @Column(columnDefinition = "Geometry(Point , 4326)")
-    Point dropOffLocation;
+    @Column(columnDefinition = "geometry(Point , 4326)")
+    private Point dropOffLocation;
 
     @CreationTimestamp
     private LocalDateTime createdTime;

@@ -57,11 +57,10 @@
 		</dependency>
 
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-spatial</artifactId>
-            <version>7.0.4.Final</version>
-            <type>pom</type>
         </dependency>
+
 
         <dependency>
             <groupId>org.modelmapper</groupId>

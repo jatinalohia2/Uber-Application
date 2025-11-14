@@ -9,11 +9,15 @@ import org.locationtech.jts.geom.PrecisionModel;
 public class GeometryUtil {
 
     public static Point convertPointDtoToPoint(PointDto pointDto){
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel() , 4326); // earth coordinates
-        Coordinate coordinate = new Coordinate(pointDto.getCoordinates()[0], pointDto.getCoordinates()[1]);
+        Coordinate coordinate = new Coordinate(
+                pointDto.getCoordinates()[0], // lon
+                pointDto.getCoordinates()[1]  // lat
+        );
+
         return geometryFactory.createPoint(coordinate);
-
     }
+
 
 }
