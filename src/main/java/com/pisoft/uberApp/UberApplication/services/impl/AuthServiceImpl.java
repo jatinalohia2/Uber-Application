@@ -6,6 +6,7 @@ import com.pisoft.uberApp.UberApplication.entities.Rider;
 import com.pisoft.uberApp.UberApplication.entities.Users;
 import com.pisoft.uberApp.UberApplication.entities.Wallet;
 import com.pisoft.uberApp.UberApplication.enums.Roles;
+import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.RiderRepository;
 import com.pisoft.uberApp.UberApplication.repositories.UserRepository;
 import com.pisoft.uberApp.UberApplication.repositories.WalletRepository;
@@ -28,12 +29,12 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public UserDto sigUp(SignUpDto signUpDto) {
+    public UserDto signUp(SignUpDto signUpDto) {
 
         Optional<Users> optional = userRepository.findByEmail(signUpDto.getEmail());
 
         if (optional.isPresent()){
-            throw new RuntimeException("User Already Exist ....");
+            throw new ResourceNotFound("User Already Exist ....");
         }
 
 

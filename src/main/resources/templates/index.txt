@@ -1,3 +1,8 @@
+Before running your code you have to enable postgis extemsion in your DBreaver :
+
+CREATE EXTENSION postgis;
+
+----------------------------------------------------------------
 13 November :
 -> entities
 -> services
@@ -6,7 +11,7 @@
 -> config
 -> enums
 -> created all the interface method declaration part
-we have create all these stuff :
+we have created all these stuff :
 
 -----------------------------------------------------------------
 
@@ -15,4 +20,12 @@ we have create all these stuff :
 -> Request a Ride : we have done this Api , inside this we have implement a lot of stuff like converting
 PointDto to Point , calculate fare , matching the driver who is nearest 1km.
 -> Also we have done SignUp Part -> in this user , rider , wallet we created....
+
+------------------------------------------------------------------
+
+15 November :
+-> Add global Response Handler and Exception handler as well ap Api Error and Api Response
+-> Created query that return top 5 highest rated driver :
+-> After that we calculate distance with the help of OSRM Api (long. : lati.) to get distance :
+->  we also implement RideManagerStrategy for making application scalable and loose coupled :
 

@@ -6,7 +6,6 @@ import com.pisoft.uberApp.UberApplication.entities.RideRequest;
 import java.util.List;
 
 public interface DriverMatchingStrategy {
-
-    List<Driver> findMatchingDriver(RideRequest rideRequest);
-
+    List<Driver> matchDrivers(RideRequest rideRequest);
 }
+

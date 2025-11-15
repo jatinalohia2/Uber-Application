@@ -15,10 +15,18 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
     // ST_DWithin(point1, 10000) // -> cal. within 10 km area
 
 
-    @Query(value = "select d.* , ST_Distance(d.currentLocation ,  :pickUpLocation) AS distance " +
+    @Query(value = "select d.* , ST_Distance(d.current_location ,  :pickUpLocation) AS distance " +
             "FROM driver d " +
-            "WHERE d.available = true AND ST_DWithin(d.currentLocation :pickUpLocation , 1000) " +
-            "ORDER BY distance" +
+            "WHERE d.available = true AND ST_DWithin(d.current_location , :pickUpLocation , 1000) " +
+            "ORDER BY distance " +
             "LIMIT 5 ", nativeQuery = true)
-    List<Driver> findNearestDriver(Point pickUpLocation);
+    List<Driver> findTopNearestDriver(Point pickUpLocation);
+
+    @Query(value = "SELECT d.* " +
+            "FROM driver d " +
+            "WHERE d.available = true AND ST_DWithin(d.current_location , :pickUpLocation , 1500) " +
+            "ORDER BY d.rating DESC " +
+            "LIMIT 5 " , nativeQuery = true)
+    List<Driver> findTopRatedDrivers(Point pickUpLocation);
+
 }

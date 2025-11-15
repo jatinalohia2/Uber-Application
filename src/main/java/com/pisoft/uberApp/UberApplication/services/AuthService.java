@@ -5,7 +5,7 @@ import com.pisoft.uberApp.UberApplication.dtos.UserDto;
 
 public interface AuthService {
 
-    UserDto sigUp(SignUpDto signUpDto);
+    UserDto signUp(SignUpDto signUpDto);
 
     UserDto login(String email , String password);
 

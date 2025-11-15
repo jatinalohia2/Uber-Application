@@ -11,16 +11,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class DriverMatchingNearestDriverStartegy implements DriverMatchingStrategy {
-
+public class DriverMatchingHighestRatedDriverStrategy implements DriverMatchingStrategy {
 
     private final DriverRepository driverRepository;
 
     @Override
-    public List<Driver> findMatchingDriver(RideRequest rideRequest) {
-
-        // find the nearest Driver :
-        // TODO implement email as well :
-        return driverRepository.findNearestDriver(rideRequest.getPickUpLocation());
+    public List<Driver> matchDrivers(RideRequest rideRequest) {
+        return driverRepository.findTopRatedDrivers(rideRequest.getPickUpLocation());
     }
 }
+

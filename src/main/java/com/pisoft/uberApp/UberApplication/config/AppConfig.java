@@ -6,6 +6,7 @@ import org.locationtech.jts.geom.Point;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 public class AppConfig {
@@ -38,6 +39,11 @@ public class AppConfig {
         });
 
         return modelMapper;
+    }
+
+    @Bean
+    public RestClient  restClient(){
+        return RestClient.builder().build();
     }
 
 }
