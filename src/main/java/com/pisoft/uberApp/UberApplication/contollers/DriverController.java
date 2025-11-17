@@ -1,13 +1,15 @@
 package com.pisoft.uberApp.UberApplication.contollers;
 
 import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
+import com.pisoft.uberApp.UberApplication.dtos.RideDto;
+import com.pisoft.uberApp.UberApplication.dtos.RideStartDto;
+import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.services.DriverService;
 import com.pisoft.uberApp.UberApplication.services.RideService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/driver")
@@ -16,5 +18,20 @@ public class DriverController {
 
     private final DriverService driverService;
     private final RideService rideService;
+
+    @PostMapping("/acceptRide/{rideRequestId}")
+    public RideDto acceptRide(@PathVariable Long rideRequestId){
+        return driverService.acceptRide(rideRequestId);
+    }
+
+    @PostMapping("/startRide/{rideId}")
+    public RideDto startRide(@PathVariable Long rideId , @RequestBody RideStartDto rideStartDto){
+        return driverService.startRide(rideId , rideStartDto.getOtp());
+    }
+
+    @GetMapping("/showAllMyRides")
+    public List<RideDto> getAllMyRides(){
+        return rideService.findAllRidesOfDriver();
+    }
 
 }

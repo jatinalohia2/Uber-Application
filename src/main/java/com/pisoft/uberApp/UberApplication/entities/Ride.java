@@ -1,5 +1,6 @@
 package com.pisoft.uberApp.UberApplication.entities;
 
+import com.pisoft.uberApp.UberApplication.enums.PaymentMethod;
 import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import jakarta.persistence.*;
@@ -37,7 +38,7 @@ public class Ride {
     private Driver driver;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
     private RideStatus rideStatus;

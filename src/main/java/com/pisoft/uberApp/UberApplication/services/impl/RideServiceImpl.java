@@ -1,19 +1,38 @@
 package com.pisoft.uberApp.UberApplication.services.impl;
 
-import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
+import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
+import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
+import com.pisoft.uberApp.UberApplication.entities.RideRequest;
+import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
+import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
+import com.pisoft.uberApp.UberApplication.repositories.DriverRepository;
+import com.pisoft.uberApp.UberApplication.repositories.RideRepository;
+import com.pisoft.uberApp.UberApplication.services.DriverService;
 import com.pisoft.uberApp.UberApplication.services.RideService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class RideServiceImpl implements RideService {
+
+    private final ModelMapper modelMapper;
+    private final RideRepository rideRepository;
+    private final DriverRepository driverRepository;
+
     @Override
     public Ride getById(Long rideId) {
-        return null;
+        return rideRepository.findById(rideId).orElseThrow(()-> new ResourceNotFound("Ride not found with id : "+rideId));
     }
 
     @Override
@@ -22,13 +41,26 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public Ride createNewRide(RideRequestDto rideRequestDto, DriverDto driverDto) {
-        return null;
+    @Transactional
+    public Ride createNewRide(RideRequest rideRequest, Driver driver) {
+
+        rideRequest.setRideRequestStatus(RideRequestStatus.CONFIRMED); // dirty checking
+
+        Ride ride = modelMapper.map(rideRequest, Ride.class);
+        ride.setDriver(driver);
+        ride.setId(null);
+        ride.setRideStatus(RideStatus.CONFIRMED);
+
+        String generated = generateOTP();
+        ride.setOtp(generated);
+        return rideRepository.save(ride);
     }
 
+
     @Override
-    public Ride updateRideStatus(Long id, RideStatus rideStatus) {
-        return null;
+    public Ride updateRideStatus(Ride ride, RideStatus rideStatus) {
+        ride.setRideStatus(rideStatus);
+        return rideRepository.save(ride);
     }
 
     @Override
@@ -38,6 +70,26 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public Page<Ride> getAllRidesOfDriver(Long driverId, PageRequest pageRequest) {
+
+        List<Ride> allRidesOfDriver = rideRepository.findAllRidesOfDriver(driverId);
+
         return null;
+    }
+
+    public List<RideDto> findAllRidesOfDriver() {
+
+        Driver byDriverId = driverRepository.findById(1L).orElse(null);
+
+
+        List<Ride> allRidesOfDriver = rideRepository.findAllRidesOfDriver(byDriverId.getId());
+        return allRidesOfDriver.stream().map((element) -> modelMapper.map(element, RideDto.class))
+                .toList();
+    }
+
+    public String generateOTP(){
+        Random random = new Random();
+        int nestedInt = random.nextInt(1000);
+        return  String.format("%04d" , nestedInt);
+
     }
 }

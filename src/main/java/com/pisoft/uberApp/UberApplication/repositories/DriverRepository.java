@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface DriverRepository extends JpaRepository<Driver, Long> {
 
+
+
     // ST_Distance(point1, point2) -> cal. distance
     // ST_DWithin(point1, 10000) // -> cal. within 10 km area
 

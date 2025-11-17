@@ -23,7 +23,7 @@ public class RideRequestDto {
 
     private LocalDateTime requestedTime;
 
-    private RiderDto riderDto;
+    private RiderDto rider;
 
     private PaymentMethod paymentMethod;
 
