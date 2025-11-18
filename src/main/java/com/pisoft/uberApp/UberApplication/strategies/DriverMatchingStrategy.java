@@ -1,4 +1,4 @@
-package com.pisoft.uberApp.UberApplication.services;
+package com.pisoft.uberApp.UberApplication.strategies;
 
 import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.RideRequest;

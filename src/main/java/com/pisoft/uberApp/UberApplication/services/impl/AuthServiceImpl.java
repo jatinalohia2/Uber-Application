@@ -11,6 +11,8 @@ import com.pisoft.uberApp.UberApplication.repositories.RiderRepository;
 import com.pisoft.uberApp.UberApplication.repositories.UserRepository;
 import com.pisoft.uberApp.UberApplication.repositories.WalletRepository;
 import com.pisoft.uberApp.UberApplication.services.AuthService;
+import com.pisoft.uberApp.UberApplication.services.RiderService;
+import com.pisoft.uberApp.UberApplication.services.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
-    private final RiderRepository riderRepository;
-    private final WalletRepository walletRepository;
+    private final RiderService riderService ;
+    private final WalletService walletService;
 
 
     @Override
@@ -37,30 +39,16 @@ public class AuthServiceImpl implements AuthService {
             throw new ResourceNotFound("User Already Exist ....");
         }
 
-
         // user creation :
         Users users = modelMapper.map(signUpDto, Users.class);
         users.setRoles(Set.of(Roles.RIDER));
         Users saveUser = userRepository.save(users);
 
         // rider creation :
-
-        Rider rider = Rider.builder()
-                .users(saveUser)
-                .rating(0.0)
-                .build();
-
-        riderRepository.save(rider);
+        riderService.createNewRider(saveUser);
 
         // Wallet Creation:
-
-        Wallet wallet = Wallet.builder()
-                .users(saveUser)
-                .balance(0.0)
-                .build();
-
-        walletRepository.save(wallet);
-
+        walletService.createNewWallet(saveUser);
         return modelMapper.map(saveUser , UserDto.class);
     }
 

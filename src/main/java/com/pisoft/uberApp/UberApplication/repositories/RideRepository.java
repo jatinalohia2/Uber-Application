@@ -1,8 +1,11 @@
 package com.pisoft.uberApp.UberApplication.repositories;
 
+import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
+import com.pisoft.uberApp.UberApplication.entities.Rider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +19,9 @@ public interface RideRepository extends JpaRepository<Ride , Long> {
 
     @Query("SELECT r from Ride r WHERE r.driver.id = :driverId")
     List<Ride> findAllRidesOfDriver(Long driverId);
+
+    Page<Ride> findByDriver(Driver driver, Pageable pageable);
+
+    Page<Ride> findByRider(Rider rider, Pageable pageable);
+
 }

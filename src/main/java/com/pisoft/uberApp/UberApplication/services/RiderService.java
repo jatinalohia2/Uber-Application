@@ -5,6 +5,8 @@ import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
 import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.entities.Rider;
+import com.pisoft.uberApp.UberApplication.entities.Users;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,7 +16,8 @@ public interface RiderService {
     RideDto cancelRide(Long rideId);
     DriverDto rateDriver(Long driverId , Double rating);
     RiderDto getMyProfile();
-    List<RideDto> getAllMyRides(); // we can't pass rider id , because that comes from Spring Security :
+    Page<RideDto> getAllMyRides(int pageNo); // we can't pass rider id , because that comes from Spring Security :
 
     Rider getCurrentRider();
+    Rider createNewRider(Users users);
 }

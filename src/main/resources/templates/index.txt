@@ -35,3 +35,14 @@ PointDto to Point , calculate fare , matching the driver who is nearest 1km.
 17 November :
 -> Accept a ride
 -> Start a Ride
+
+
+-------------------------------------------------------------------
+
+18 November :
+-> Pagination : getAllRidesOfDriver  , getAllRidesOfRider
+-> Wallet Related and Payment Related -> { PaymentManagerStrategy }
+-> CashPymentStrategy , WalletPaymentStrategy
+
+19 November :
+-> cancelRide

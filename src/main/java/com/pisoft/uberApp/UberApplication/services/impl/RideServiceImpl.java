@@ -5,6 +5,7 @@ import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
 import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
 import com.pisoft.uberApp.UberApplication.entities.RideRequest;
+import com.pisoft.uberApp.UberApplication.entities.Rider;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,12 +34,8 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public Ride getById(Long rideId) {
+
         return rideRepository.findById(rideId).orElseThrow(()-> new ResourceNotFound("Ride not found with id : "+rideId));
-    }
-
-    @Override
-    public void matchWithDriver(RideRequestDto rideRequestDto) {
-
     }
 
     @Override
@@ -64,17 +62,15 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public Page<Ride> getAllRidesOfRider(Long riderId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfRider(Rider rider, Pageable pageable) {
+        return rideRepository.findByRider(rider , pageable);
     }
 
     @Override
-    public Page<Ride> getAllRidesOfDriver(Long driverId, PageRequest pageRequest) {
-
-        List<Ride> allRidesOfDriver = rideRepository.findAllRidesOfDriver(driverId);
-
-        return null;
+    public Page<Ride> getAllRidesOfDriver(Driver driver, Pageable pageable) {
+        return rideRepository.findByDriver(driver , pageable);
     }
+
 
     public List<RideDto> findAllRidesOfDriver() {
 

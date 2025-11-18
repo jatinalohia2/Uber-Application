@@ -19,9 +19,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RideDto {
 
-    PointDto pickUpLocation;
+    private Long id;
 
-    PointDto dropOffLocation;
+    private PointDto pickUpLocation;
+
+    private PointDto dropOffLocation;
 
     private LocalDateTime createdTime;
 
@@ -34,4 +36,7 @@ public class RideDto {
     private RideStatus rideStatus;
 
     private String otp;
+
+    LocalDateTime startedAt;
+    LocalDateTime endedAt;
 }

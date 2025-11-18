@@ -18,12 +18,12 @@ public class Wallet {
     @Column(nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     private Users users;
 
     private Double balance;
 
-    @OneToMany
+    @OneToMany(mappedBy = "wallet" , cascade = CascadeType.ALL)
     @ToString.Exclude
     List<WalletTransaction> walletTransactions;
 

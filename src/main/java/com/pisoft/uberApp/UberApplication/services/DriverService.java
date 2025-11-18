@@ -4,8 +4,8 @@ import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.entities.Driver;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface DriverService {
 
@@ -15,8 +15,8 @@ public interface DriverService {
     RideDto endRide(Long rideId);
     RiderDto rateRider(Long riderId , Double rating);
     DriverDto getMyProfile(); //
-    Driver findByDriverId();
+    Driver getCurrentDriver();
     void updateDriverAvailability(Driver driver);
 
-
+    Page<RideDto> getAllMyRides(int pageNo);
 }

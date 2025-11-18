@@ -7,6 +7,8 @@ import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.services.DriverService;
 import com.pisoft.uberApp.UberApplication.services.RideService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,9 +31,9 @@ public class DriverController {
         return driverService.startRide(rideId , rideStartDto.getOtp());
     }
 
-    @GetMapping("/showAllMyRides")
-    public List<RideDto> getAllMyRides(){
-        return rideService.findAllRidesOfDriver();
+    @GetMapping("/getAllMyRides/{pageNo}")
+    public List<RideDto> getAllMyRides(@RequestParam(defaultValue = "0") int pageNo){
+        return driverService.getAllMyRides(pageNo).getContent();
     }
 
 }

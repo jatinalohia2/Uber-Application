@@ -12,14 +12,18 @@ import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.DriverRepository;
 import com.pisoft.uberApp.UberApplication.repositories.RideRepository;
 import com.pisoft.uberApp.UberApplication.services.DriverService;
+import com.pisoft.uberApp.UberApplication.services.PaymentService;
 import com.pisoft.uberApp.UberApplication.services.RideRequestService;
 import com.pisoft.uberApp.UberApplication.services.RideService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +34,10 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final RideService rideService;
     private final ModelMapper modelMapper;
-    private final RideRepository rideRepository;
+    private final PaymentService paymentService;
+
+    @Value("${PAGE_SIZE}")
+    final int PAGE_SIZE;
 
     @Override
     public RideDto acceptRide(Long rideRequestId) {
@@ -39,7 +46,7 @@ public class DriverServiceImpl implements DriverService {
 
         RideRequest rideRequest = rideRequestService.findByRideRequestId(rideRequestId);
 
-        Driver currentDriver = findByDriverId();
+        Driver currentDriver = getCurrentDriver();
 
 
         if (!rideRequest.getRideRequestStatus().equals(RideRequestStatus.PENDING)){
@@ -62,7 +69,7 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public RideDto startRide(Long rideId, String otp) {
 
-        Driver currentDriver = findByDriverId();
+        Driver currentDriver = getCurrentDriver();
 
         Ride ride = rideService.getById(rideId);
 
@@ -78,10 +85,14 @@ public class DriverServiceImpl implements DriverService {
             throw new RuntimeException("You can't start Ride with these Ride Status ....");
         }
 
+        ride.setStartedAt(LocalDateTime.now());
         Ride updateRide = rideService.updateRideStatus(ride, RideStatus.ONGOING);
 
         // driver availability = false :
         updateDriverAvailability(currentDriver);
+
+        // Process Payment
+        paymentService.createNewPayment(updateRide);
 
         return modelMapper.map(updateRide , RideDto.class);
     }
@@ -102,7 +113,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver findByDriverId() {
+    public Driver getCurrentDriver() {
         return driverRepository.findById(1L).orElseThrow(()->
                 new ResourceNotFound("Driver not found with id" +1L));
     }
@@ -112,4 +123,16 @@ public class DriverServiceImpl implements DriverService {
         driver.setAvailable(false);
         driverRepository.save(driver);
     }
+
+    @Override
+    public Page<RideDto> getAllMyRides(int pageNo) {
+
+         Pageable pageable = PageRequest.of(pageNo , PAGE_SIZE);
+
+
+        Driver currentDriver = getCurrentDriver();
+        return rideService.getAllRidesOfDriver(currentDriver, pageable).map((
+                element) -> modelMapper.map(element, RideDto.class));
+    }
+
 }

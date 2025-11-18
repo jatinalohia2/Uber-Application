@@ -1,0 +1,52 @@
+package com.pisoft.uberApp.UberApplication.strategies.impl;
+
+import com.pisoft.uberApp.UberApplication.entities.Driver;
+import com.pisoft.uberApp.UberApplication.entities.Payment;
+import com.pisoft.uberApp.UberApplication.entities.Rider;
+import com.pisoft.uberApp.UberApplication.entities.Wallet;
+import com.pisoft.uberApp.UberApplication.enums.TransacationMethod;
+import com.pisoft.uberApp.UberApplication.enums.TransacationType;
+import com.pisoft.uberApp.UberApplication.services.WalletService;
+import com.pisoft.uberApp.UberApplication.strategies.PaymentStrategy;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class WalletPaymentStrategy implements PaymentStrategy  {
+
+    private final WalletService walletService;
+
+    // Ride : 100
+    //Rider = 200
+    //Driver  = 300
+    // platecommission = 0.3
+    // deductfromRider = 100
+    // addAmounToDriver = 70
+    // PC = 30
+
+    @Override
+    @Transactional
+    public void paymentProcess(Payment payment) {
+
+        Double rideAmount  = payment.getAmount();
+
+        // Driver Part :
+        Driver driver = payment.getRide().getDriver();
+        Wallet driverWallet = walletService.findByUsers(driver.getUsers().getId());
+
+        double addAmountTODriverWallet = rideAmount * (1 - PaymentStrategy.PLATEFORM_COMMISSIONION);
+
+        walletService.addMoneyToWallet(driver.getUsers().getId() , addAmountTODriverWallet ,
+                TransacationType.CREDIT , TransacationMethod.RIDE , payment.getRide() , null);
+
+        // Rider Part :
+
+        Rider rider = payment.getRide().getRider();
+
+        Wallet riderWallet = walletService.findByUsers(driver.getUsers().getId());
+        walletService.deductMoneyFromWallet(driver.getUsers().getId() , rideAmount ,
+                TransacationType.DEBIT , TransacationMethod.RIDE , payment.getRide() , null);
+    }
+}

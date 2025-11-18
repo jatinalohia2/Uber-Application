@@ -51,4 +51,18 @@ public class GlobalExceptionHandler {
 
         return BuildResponseHanlder(apiError);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponse<?>> handleRuntime(RuntimeException e) {
+
+        ApiError apiError = ApiError.builder()
+                .localDateTime(LocalDateTime.now())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(e.getMessage())
+                .errors(List.of("Something went wrong"))
+                .build();
+
+        return BuildResponseHanlder(apiError);
+    }
+
 }

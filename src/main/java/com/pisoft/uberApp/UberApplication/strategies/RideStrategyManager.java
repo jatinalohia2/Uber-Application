@@ -1,13 +1,9 @@
 package com.pisoft.uberApp.UberApplication.strategies;
 
-import com.pisoft.uberApp.UberApplication.entities.Rider;
-import com.pisoft.uberApp.UberApplication.services.DriverMatchingStrategy;
-import com.pisoft.uberApp.UberApplication.services.RideFareCalculationStrategy;
-import com.pisoft.uberApp.UberApplication.services.RiderService;
-import com.pisoft.uberApp.UberApplication.services.impl.DriverMatchingHighestRatedDriverStrategy;
-import com.pisoft.uberApp.UberApplication.services.impl.DriverMatchingNearestDriverStrategy;
-import com.pisoft.uberApp.UberApplication.services.impl.RideFareDefaultCalculationStrategy;
-import com.pisoft.uberApp.UberApplication.services.impl.RideFareSurgePricingStrategy;
+import com.pisoft.uberApp.UberApplication.strategies.impl.DriverMatchingHighestRatedDriverStrategy;
+import com.pisoft.uberApp.UberApplication.strategies.impl.DriverMatchingNearestDriverStrategy;
+import com.pisoft.uberApp.UberApplication.strategies.impl.RideFareDefaultCalculationStrategy;
+import com.pisoft.uberApp.UberApplication.strategies.impl.RideFareSurgePricingStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +11,7 @@ import java.time.LocalTime;
 
 @Component
 @RequiredArgsConstructor
-public class RideStrategy {
+public class RideStrategyManager {
 
     private final DriverMatchingNearestDriverStrategy driverMatchingNearestDriverStartegy;
     private final DriverMatchingHighestRatedDriverStrategy driverMatchingHighestRatedDriverStartegy;

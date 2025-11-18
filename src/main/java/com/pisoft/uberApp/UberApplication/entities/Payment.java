@@ -31,4 +31,7 @@ public class Payment {
     private Double amount;
     private LocalDateTime localDateTime;
 
+
+    private String transactionId;
+
 }

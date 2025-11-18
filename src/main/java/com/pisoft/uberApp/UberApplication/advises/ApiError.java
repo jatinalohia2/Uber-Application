@@ -19,4 +19,7 @@ public class ApiError {
     private String message;
     private HttpStatus httpStatus;
     List<String> errors;
+
+
+
 }
