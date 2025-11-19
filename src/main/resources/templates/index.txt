@@ -46,3 +46,5 @@ PointDto to Point , calculate fare , matching the driver who is nearest 1km.
 
 19 November :
 -> cancelRide
+-> endRide
+-> // TODO Process Payment

@@ -28,7 +28,7 @@ public class WalletPaymentStrategy implements PaymentStrategy  {
 
     @Override
     @Transactional
-    public void paymentProcess(Payment payment) {
+    public void getPaymentProcess(Payment payment) {
 
         Double rideAmount  = payment.getAmount();
 
@@ -36,17 +36,17 @@ public class WalletPaymentStrategy implements PaymentStrategy  {
         Driver driver = payment.getRide().getDriver();
         Wallet driverWallet = walletService.findByUsers(driver.getUsers().getId());
 
-        double addAmountTODriverWallet = rideAmount * (1 - PaymentStrategy.PLATEFORM_COMMISSIONION);
+        double addAmountTODriverWallet = rideAmount * (1 - PaymentStrategy.PLATEFORM_COMMISSIONION);  // 70
 
-        walletService.addMoneyToWallet(driver.getUsers().getId() , addAmountTODriverWallet ,
-                TransacationType.CREDIT , TransacationMethod.RIDE , payment.getRide() , null);
+        walletService.addMoneyToWallet(driver.getUsers().getId() , addAmountTODriverWallet ,TransacationType.CREDIT , TransacationMethod.RIDE , payment.getRide() , null);
 
         // Rider Part :
 
         Rider rider = payment.getRide().getRider();
+        walletService.deductMoneyFromWallet(rider.getUsers().getId() , rideAmount , TransacationType.DEBIT , TransacationMethod.RIDE , payment.getRide() , null);
 
-        Wallet riderWallet = walletService.findByUsers(driver.getUsers().getId());
-        walletService.deductMoneyFromWallet(driver.getUsers().getId() , rideAmount ,
-                TransacationType.DEBIT , TransacationMethod.RIDE , payment.getRide() , null);
+        payment.setDriverAmount(addAmountTODriverWallet);
+        payment.setPlatformCommissionAmt(rideAmount - addAmountTODriverWallet);
+
     }
 }

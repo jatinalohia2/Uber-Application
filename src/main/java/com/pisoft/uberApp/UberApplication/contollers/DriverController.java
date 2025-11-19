@@ -31,6 +31,11 @@ public class DriverController {
         return driverService.startRide(rideId , rideStartDto.getOtp());
     }
 
+    @PostMapping("/endRide/{rideId}")
+    public RideDto endRide(@PathVariable Long rideId){
+        return driverService.endRide(rideId);
+    }
+
     @GetMapping("/getAllMyRides/{pageNo}")
     public List<RideDto> getAllMyRides(@RequestParam(defaultValue = "0") int pageNo){
         return driverService.getAllMyRides(pageNo).getContent();

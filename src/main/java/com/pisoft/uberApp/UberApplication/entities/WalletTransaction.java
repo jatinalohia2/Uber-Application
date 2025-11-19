@@ -33,7 +33,7 @@ public class WalletTransaction {
     @Enumerated(EnumType.STRING)
     private TransacationMethod transacationMethod;
 
-    @OneToOne
+    @ManyToOne
     private Ride ride;
 
     private String transactionId;

@@ -26,7 +26,7 @@ public class CashPaymentStrategy implements PaymentStrategy  {
     // Driver : 200  - 30
 
     @Override
-    public void paymentProcess(Payment payment) {
+    public void getPaymentProcess(Payment payment) {
 
         Double rideAmount  = payment.getAmount();
 

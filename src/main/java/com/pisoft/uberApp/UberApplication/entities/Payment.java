@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +30,13 @@ public class Payment {
     private PaymentStatus paymentStatus;
 
     private Double amount;
+
     private LocalDateTime localDateTime;
 
 
     private String transactionId;
+
+    private Double driverAmount;
+    private Double platformCommissionAmt;
 
 }

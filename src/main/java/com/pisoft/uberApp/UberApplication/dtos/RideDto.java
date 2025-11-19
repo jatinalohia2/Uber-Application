@@ -39,4 +39,5 @@ public class RideDto {
 
     LocalDateTime startedAt;
     LocalDateTime endedAt;
+    private Double fare;
 }

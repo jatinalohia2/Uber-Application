@@ -31,7 +31,7 @@ public class RiderServiceImpl implements RiderService {
     private final RideService rideService;
 
     @Value("${PAGE_SIZE}")
-    final int PAGE_SIZE;
+    Integer PAGE_SIZE;
 
     @Override
     public RideRequestDto requestRide(RideRequestDto rideRequestDto) {

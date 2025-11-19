@@ -17,7 +17,6 @@ public interface RiderService {
     DriverDto rateDriver(Long driverId , Double rating);
     RiderDto getMyProfile();
     Page<RideDto> getAllMyRides(int pageNo); // we can't pass rider id , because that comes from Spring Security :
-
     Rider getCurrentRider();
     Rider createNewRider(Users users);
 }

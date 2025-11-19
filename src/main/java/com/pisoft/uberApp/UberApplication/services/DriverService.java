@@ -16,7 +16,7 @@ public interface DriverService {
     RiderDto rateRider(Long riderId , Double rating);
     DriverDto getMyProfile(); //
     Driver getCurrentDriver();
-    void updateDriverAvailability(Driver driver);
+    void updateDriverAvailability(Driver driver , boolean isAvailable);
 
     Page<RideDto> getAllMyRides(int pageNo);
 }

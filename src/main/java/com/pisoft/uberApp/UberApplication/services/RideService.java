@@ -21,4 +21,6 @@ public interface RideService {
 
     Page<Ride> getAllRidesOfRider(Rider rider , Pageable pageable);
     Page<Ride> getAllRidesOfDriver(Driver driver , Pageable pageable);
+
+    Ride saveRide(Ride ride);
 }

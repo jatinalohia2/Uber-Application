@@ -34,7 +34,6 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public Ride getById(Long rideId) {
-
         return rideRepository.findById(rideId).orElseThrow(()-> new ResourceNotFound("Ride not found with id : "+rideId));
     }
 
@@ -69,6 +68,11 @@ public class RideServiceImpl implements RideService {
     @Override
     public Page<Ride> getAllRidesOfDriver(Driver driver, Pageable pageable) {
         return rideRepository.findByDriver(driver , pageable);
+    }
+
+    @Override
+    public Ride saveRide(Ride ride) {
+        return rideRepository.save(ride);
     }
 
 

@@ -76,3 +76,8 @@ INSERT INTO driver (users_id, rating, lic_no, available, current_location) VALUE
 (14, 4.4, 'DL01A1008', false, ST_GeomFromText('POINT(77.2105 28.6150)', 4326)),
 (15, 4.6, 'DL01A1009', true,  ST_GeomFromText('POINT(77.2091 28.6125)', 4326)),
 (16, 4.5, 'DL01A1010', true,  ST_GeomFromText('POINT(77.2097 28.6133)', 4326));
+
+
+--INSERT INTO wallet (users_id, balance) VALUES(
+--(1, 500),
+--(6, 500));

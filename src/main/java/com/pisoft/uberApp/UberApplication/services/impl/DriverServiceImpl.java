@@ -4,8 +4,10 @@ import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.entities.Driver;
+import com.pisoft.uberApp.UberApplication.entities.Payment;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
 import com.pisoft.uberApp.UberApplication.entities.RideRequest;
+import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -37,7 +40,7 @@ public class DriverServiceImpl implements DriverService {
     private final PaymentService paymentService;
 
     @Value("${PAGE_SIZE}")
-    final int PAGE_SIZE;
+     Integer PAGE_SIZE;
 
     @Override
     public RideDto acceptRide(Long rideRequestId) {
@@ -89,17 +92,46 @@ public class DriverServiceImpl implements DriverService {
         Ride updateRide = rideService.updateRideStatus(ride, RideStatus.ONGOING);
 
         // driver availability = false :
-        updateDriverAvailability(currentDriver);
+        updateDriverAvailability(currentDriver , false);
 
-        // Process Payment
+        // creating object of payment :
         paymentService.createNewPayment(updateRide);
 
         return modelMapper.map(updateRide , RideDto.class);
     }
 
     @Override
+    @Transactional
     public RideDto endRide(Long rideId) {
-        return null;
+
+        Driver currentDriver = getCurrentDriver();
+
+        Ride ride = rideService.getById(rideId);
+
+        if (!ride.getDriver().equals(currentDriver)){
+            throw new RuntimeException("This Ride doesn't belongs to this Driver");
+        }
+
+        if (!ride.getRideStatus().equals(RideStatus.ONGOING)){
+            throw new RuntimeException("You can't end Ride with these Ride Status ....");
+        }
+
+        ride.setEndedAt(LocalDateTime.now());
+        ride.setRideStatus(RideStatus.ENDED);
+        Ride savedRide = rideService.saveRide(ride);
+
+        // driver availability = true :
+        updateDriverAvailability(currentDriver , true);
+
+        Payment payment = paymentService.findByRide(savedRide);
+        paymentService.updatePaymentStatus(payment , PaymentStatus.CONFIRMED);
+
+        // process payment :
+        paymentService.processPayment(savedRide , payment);
+
+        // TODO Rating implementation :
+
+        return modelMapper.map(savedRide, RideDto.class);
     }
 
     @Override
@@ -109,18 +141,17 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverDto getMyProfile() {
-        return null;
+        return modelMapper.map(getCurrentDriver(), DriverDto.class);
     }
 
     @Override
     public Driver getCurrentDriver() {
-        return driverRepository.findById(1L).orElseThrow(()->
+        return driverRepository.findById(6L).orElseThrow(()->
                 new ResourceNotFound("Driver not found with id" +1L));
     }
 
     @Override
-    public void updateDriverAvailability(Driver driver) {
-        driver.setAvailable(false);
+    public void updateDriverAvailability(Driver driver , boolean isAvailable) {
         driverRepository.save(driver);
     }
 
