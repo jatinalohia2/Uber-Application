@@ -1,0 +1,70 @@
+1. SignUp
+
+url -> localhost:8080/auth/signUp
+
+body -> raw -> json
+
+{
+    "name":"jatin",
+    "email":"ja@gmail.com",
+    "password":"123"
+}
+
+---------------------------------------------------------------
+
+2. Request Ride
+
+url -> localhost:8080/ride/requestRide
+
+body -> raw -> json
+
+{
+    "pickUpLocation":{
+        "coordinates": [13.388863240,52.513247037]
+    },
+    "dropOffLocation": {
+	    "coordinates": [13.397634,52.529407]
+	  },
+      "paymentMethod":"COD"
+}
+
+
+-------------------------------------------------------------------
+
+3. Accept Ride
+
+url -> localhost:8080/driver/acceptRide/1             -> 1  represent ride_request_Id
+
+-------------------------------------------------------------------
+
+4. Start Ride
+
+url -> localhost:8080/driver/startRide/1              -> 1  represent ride_Id
+
+body -> raw -> json
+
+{
+    "otp":"0372"
+}
+
+-------------------------------------------------------------------
+
+5. End Ride
+
+url -> localhost:8080/driver/endRide/1                 -> 1  represent ride_Id
+
+
+-------------------------------------------------------------------
+
+6. Rating
+
+url -> localhost:8080/rides/1/rate                     -> 1  represent ride_Id
+
+body ->raw -> json
+
+{
+    "rating":3,
+    "feedback":"nice"
+}
+
+---------------------------------------------------------------------
