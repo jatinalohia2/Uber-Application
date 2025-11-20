@@ -22,11 +22,12 @@ public class Rider {
     @OneToOne
     private Users users;
 
-    private Double rating;
-
     @OneToMany
     @ToString.Exclude
     List<Ride> rides;
+
+    private Double averageRating;
+    private Integer totalRating;
 
 
 

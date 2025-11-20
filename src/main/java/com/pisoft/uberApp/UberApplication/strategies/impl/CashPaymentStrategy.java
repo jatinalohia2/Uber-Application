@@ -11,6 +11,7 @@ import com.pisoft.uberApp.UberApplication.services.WalletService;
 import com.pisoft.uberApp.UberApplication.strategies.PaymentStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class CashPaymentStrategy implements PaymentStrategy  {
     // Driver : 200  - 30
 
     @Override
+    @Transactional
     public void getPaymentProcess(Payment payment) {
 
         Double rideAmount  = payment.getAmount();
@@ -38,5 +40,6 @@ public class CashPaymentStrategy implements PaymentStrategy  {
 
         walletService.deductMoneyFromWallet(driver.getUsers().getId() , deductDriverWalletAmt , TransacationType.DEBIT , TransacationMethod.RIDE , payment.getRide() , null);
 
+        payment.setPlatformCommissionAmt(deductDriverWalletAmt); // dirty checking ....
     }
 }

@@ -51,31 +51,31 @@ INSERT INTO users_roles (users_id, roles) VALUES
 -- -----------------------------
 -- RIDERS
 -- -----------------------------
-INSERT INTO rider (users_id, rating) VALUES
-(1, 4.8),
-(2, 4.6),
-(3, 4.9),
-(4, 4.5),
-(5, 4.4),
-(17, 4.7),
-(18, 4.5),
-(19, 4.9),
-(20, 4.6);
+INSERT INTO rider (users_id, average_Rating , total_Rating) VALUES
+(1, 4.8 ,1),
+(2, 4.6,1),
+(3, 4.9,1),
+(4, 4.5,1),
+(5, 4.4,1),
+(17, 4.7,1),
+(18, 4.5,1),
+(19, 4.9,1),
+(20, 4.6,1);
 
 -- -----------------------------
 -- DRIVERS
 -- -----------------------------
-INSERT INTO driver (users_id, rating, lic_no, available, current_location) VALUES
-(6, 4.7, 'DL01A1001', true,  ST_GeomFromText('POINT(77.2080 28.6145)', 4326)),
-(7, 4.8, 'DL01A1002', true,  ST_GeomFromText('POINT(77.2095 28.6140)', 4326)),
-(8, 4.6, 'DL01A1003', false, ST_GeomFromText('POINT(77.2102 28.6130)', 4326)),
-(9, 4.9, 'DL01A1004', true,  ST_GeomFromText('POINT(77.2110 28.6128)', 4326)),
-(10, 4.5, 'DL01A1005', true,  ST_GeomFromText('POINT(77.2088 28.6132)', 4326)),
-(12, 4.8, 'DL01A1006', true,  ST_GeomFromText('POINT(77.2075 28.6141)', 4326)),
-(13, 4.7, 'DL01A1007', true,  ST_GeomFromText('POINT(77.2099 28.6137)', 4326)),
-(14, 4.4, 'DL01A1008', false, ST_GeomFromText('POINT(77.2105 28.6150)', 4326)),
-(15, 4.6, 'DL01A1009', true,  ST_GeomFromText('POINT(77.2091 28.6125)', 4326)),
-(16, 4.5, 'DL01A1010', true,  ST_GeomFromText('POINT(77.2097 28.6133)', 4326));
+INSERT INTO driver (users_id, average_Rating, lic_no, available, current_location , total_Rating) VALUES
+(6, 4.7, 'DL01A1001', true,  ST_GeomFromText('POINT(77.2080 28.6145)', 4326) , 1),
+(7, 4.8, 'DL01A1002', true,  ST_GeomFromText('POINT(77.2095 28.6140)', 4326) ,1),
+(8, 4.6, 'DL01A1003', false, ST_GeomFromText('POINT(77.2102 28.6130)', 4326),1),
+(9, 4.9, 'DL01A1004', true,  ST_GeomFromText('POINT(77.2110 28.6128)', 4326),1),
+(10, 4.5, 'DL01A1005', true,  ST_GeomFromText('POINT(77.2088 28.6132)', 4326),1),
+(12, 4.8, 'DL01A1006', true,  ST_GeomFromText('POINT(77.2075 28.6141)', 4326),1),
+(13, 4.7, 'DL01A1007', true,  ST_GeomFromText('POINT(77.2099 28.6137)', 4326),1),
+(14, 4.4, 'DL01A1008', false, ST_GeomFromText('POINT(77.2105 28.6150)', 4326),1),
+(15, 4.6, 'DL01A1009', true,  ST_GeomFromText('POINT(77.2091 28.6125)', 4326),1),
+(16, 4.5, 'DL01A1010', true,  ST_GeomFromText('POINT(77.2097 28.6133)', 4326),1);
 
 
 --INSERT INTO wallet (users_id, balance) VALUES(

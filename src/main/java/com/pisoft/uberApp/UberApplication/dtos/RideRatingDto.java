@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiderDto {
+public class RideRatingDto {
 
-    private UserDto users;
-
-    private Double averageRating;
-
+    private Double rating;
+    private String feedback;
 }

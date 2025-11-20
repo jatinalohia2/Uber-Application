@@ -29,6 +29,9 @@ public class Users {
     @OneToOne(mappedBy = "users")
     private Rider rider;
 
+    @OneToOne(mappedBy = "users")
+    private Driver driver;
+
     
 
 

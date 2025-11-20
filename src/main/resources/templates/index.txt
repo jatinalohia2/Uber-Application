@@ -45,6 +45,12 @@ PointDto to Point , calculate fare , matching the driver who is nearest 1km.
 -> CashPymentStrategy , WalletPaymentStrategy
 
 19 November :
--> cancelRide
+-> cancelRide -> do your own :
 -> endRide
 -> // TODO Process Payment
+
+20 November :
+-> Rating Related
+
+21 November :
+-> Pagination working

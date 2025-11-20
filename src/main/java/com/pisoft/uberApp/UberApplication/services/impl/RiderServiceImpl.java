@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class RiderServiceImpl implements RiderService {
 
         // matching Drivers :
         // TODO email is remaining....
-        rideStrategyManager.findMatchingDriver(currentRider.getRating()).matchDrivers(rideRequest);
+        rideStrategyManager.findMatchingDriver(currentRider.getAverageRating()).matchDrivers(rideRequest);
 
         return convertRideReqToRideReqDto(rideRequest);
     }
@@ -97,9 +98,20 @@ public class RiderServiceImpl implements RiderService {
     public Rider createNewRider(Users users) {
         Rider rider = Rider.builder()
                 .users(users)
-                .rating(0.0)
+                .averageRating(0.0)
                 .build();
         return riderRepository.save(rider);
+    }
+
+    @Override
+    public boolean existsByUsersId(Long userId) {
+        return riderRepository.existsByUsersId(userId);
+    }
+
+    @Override
+    @Transactional
+    public void updateRating(Long userId, Double rating) {
+        riderRepository.updateRating(userId , rating);
     }
 
     public RideRequestDto convertRideReqToRideReqDto (RideRequest rideRequest){

@@ -3,28 +3,24 @@ package com.pisoft.uberApp.UberApplication.services.impl;
 import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
-import com.pisoft.uberApp.UberApplication.entities.Driver;
-import com.pisoft.uberApp.UberApplication.entities.Payment;
-import com.pisoft.uberApp.UberApplication.entities.Ride;
-import com.pisoft.uberApp.UberApplication.entities.RideRequest;
+import com.pisoft.uberApp.UberApplication.entities.*;
 import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.DriverRepository;
 import com.pisoft.uberApp.UberApplication.repositories.RideRepository;
-import com.pisoft.uberApp.UberApplication.services.DriverService;
-import com.pisoft.uberApp.UberApplication.services.PaymentService;
-import com.pisoft.uberApp.UberApplication.services.RideRequestService;
-import com.pisoft.uberApp.UberApplication.services.RideService;
+import com.pisoft.uberApp.UberApplication.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -38,11 +34,16 @@ public class DriverServiceImpl implements DriverService {
     private final RideService rideService;
     private final ModelMapper modelMapper;
     private final PaymentService paymentService;
+    private final WalletService walletService;
 
     @Value("${PAGE_SIZE}")
-     Integer PAGE_SIZE;
+    Integer PAGE_SIZE;
+
+    @Value("${MINIMUM_DRIVER_BALANCE}")
+    Integer MINIMUM_DRIVER_BALANCE;
 
     @Override
+    @Transactional
     public RideDto acceptRide(Long rideRequestId) {
 
          final Integer PAGE_NUMBER = 0;
@@ -50,6 +51,18 @@ public class DriverServiceImpl implements DriverService {
         RideRequest rideRequest = rideRequestService.findByRideRequestId(rideRequestId);
 
         Driver currentDriver = getCurrentDriver();
+
+        Long userId = currentDriver.getUsers().getId();
+
+        Wallet driversWallet = walletService.findByUsers(userId);
+
+        // -70
+        // -50 ride not accept :
+
+        if (driversWallet.getBalance() < MINIMUM_DRIVER_BALANCE){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE ,
+                    "Driver cannot accept the ride because of less than  "+MINIMUM_DRIVER_BALANCE);
+        }
 
 
         if (!rideRequest.getRideRequestStatus().equals(RideRequestStatus.PENDING)){
@@ -164,6 +177,17 @@ public class DriverServiceImpl implements DriverService {
         Driver currentDriver = getCurrentDriver();
         return rideService.getAllRidesOfDriver(currentDriver, pageable).map((
                 element) -> modelMapper.map(element, RideDto.class));
+    }
+
+    @Override
+    public boolean existsByUsersId(Long userId) {
+        return driverRepository.existsByUsersId(userId);
+    }
+
+    @Override
+    public void updateRating(Long userId, Double rating) {
+        System.out.println("dddddddddddddd : "+userId +" "+rating);
+        driverRepository.updateRating(userId , rating);
     }
 
 }

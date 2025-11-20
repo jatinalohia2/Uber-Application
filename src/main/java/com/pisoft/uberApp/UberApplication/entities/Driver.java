@@ -20,13 +20,16 @@ public class Driver {
     @OneToOne
     private Users users;
 
-    private Double rating;
-
     private String licNo;
 
     private Boolean available;
 
     @Column(columnDefinition = "geometry(Point , 4326)")
     private Point currentLocation;
+
+    private Double averageRating;
+    private Integer totalRating;
+
+
 
 }

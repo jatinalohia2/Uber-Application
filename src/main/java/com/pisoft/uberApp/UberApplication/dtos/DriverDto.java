@@ -11,7 +11,7 @@ public class DriverDto {
 
     UserDto users;
 
-    private Double rating;
+    private Double averageRating;
 
 
 }

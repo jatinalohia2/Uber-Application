@@ -19,4 +19,8 @@ public interface DriverService {
     void updateDriverAvailability(Driver driver , boolean isAvailable);
 
     Page<RideDto> getAllMyRides(int pageNo);
+
+    boolean existsByUsersId(Long userId);
+
+    void updateRating(Long userId, Double rating);
 }

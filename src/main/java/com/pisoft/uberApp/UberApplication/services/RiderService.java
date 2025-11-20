@@ -19,4 +19,8 @@ public interface RiderService {
     Page<RideDto> getAllMyRides(int pageNo); // we can't pass rider id , because that comes from Spring Security :
     Rider getCurrentRider();
     Rider createNewRider(Users users);
+
+    boolean existsByUsersId(Long userId);
+
+    void updateRating(Long userId, Double rating);
 }
