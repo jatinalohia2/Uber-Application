@@ -1,6 +1,5 @@
 package com.pisoft.uberApp.UberApplication.repositories;
 
-import com.pisoft.uberApp.UberApplication.entities.Wallet;
 import com.pisoft.uberApp.UberApplication.entities.WalletTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

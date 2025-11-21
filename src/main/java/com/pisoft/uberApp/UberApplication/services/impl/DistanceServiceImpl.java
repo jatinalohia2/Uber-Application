@@ -1,7 +1,9 @@
 package com.pisoft.uberApp.UberApplication.services.impl;
 
 import com.pisoft.uberApp.UberApplication.services.DistanceService;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;

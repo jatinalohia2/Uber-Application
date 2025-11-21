@@ -4,7 +4,6 @@ import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
 import com.pisoft.uberApp.UberApplication.entities.Rider;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

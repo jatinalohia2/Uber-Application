@@ -1,17 +1,12 @@
 package com.pisoft.uberApp.UberApplication.services;
 
-import com.pisoft.uberApp.UberApplication.dtos.RideDto;
-import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
 import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
 import com.pisoft.uberApp.UberApplication.entities.RideRequest;
 import com.pisoft.uberApp.UberApplication.entities.Rider;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public interface RideService {
 

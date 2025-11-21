@@ -2,14 +2,12 @@ package com.pisoft.uberApp.UberApplication.services.impl;
 
 import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
-import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.entities.*;
 import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.DriverRepository;
-import com.pisoft.uberApp.UberApplication.repositories.RideRepository;
 import com.pisoft.uberApp.UberApplication.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -148,11 +146,6 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public RiderDto rateRider(Long riderId, Double rating) {
-        return null;
-    }
-
-    @Override
     public DriverDto getMyProfile() {
         return modelMapper.map(getCurrentDriver(), DriverDto.class);
     }
@@ -188,6 +181,11 @@ public class DriverServiceImpl implements DriverService {
     public void updateRating(Long userId, Double rating) {
         System.out.println("dddddddddddddd : "+userId +" "+rating);
         driverRepository.updateRating(userId , rating);
+    }
+
+    @Override
+    public Driver onBoardNewDriver(Driver driver) {
+        return driverRepository.save(driver);
     }
 
 }

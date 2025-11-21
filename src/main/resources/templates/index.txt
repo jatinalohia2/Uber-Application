@@ -1,4 +1,4 @@
-Before running your code you have to enable postgis extemsion in your DBreaver :
+Before running your code you have to enable Postgis extension in your DBreaver :
 
 CREATE EXTENSION postgis;
 
@@ -47,7 +47,7 @@ PointDto to Point , calculate fare , matching the driver who is nearest 1km.
 19 November :
 -> cancelRide -> do your own :
 -> endRide
--> // TODO Process Payment
+-> //  Process Payment
 
 20 November :
 -> Rating Related

@@ -1,20 +1,25 @@
 package com.pisoft.uberApp.UberApplication.entities;
 
 import com.pisoft.uberApp.UberApplication.enums.PaymentMethod;
-import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.locationtech.jts.geom.Point;
+
 import java.time.LocalDateTime;
 
-@Entity
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "idx_ride_riderId" , columnList = "rider_id"),
+        @Index(name = "idx_ride_driverId" , columnList = "driver_id")
+})
+@Entity
 public class Ride {
 
     @Id

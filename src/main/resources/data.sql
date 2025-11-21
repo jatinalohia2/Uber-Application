@@ -78,6 +78,6 @@ INSERT INTO driver (users_id, average_Rating, lic_no, available, current_locatio
 (16, 4.5, 'DL01A1010', true,  ST_GeomFromText('POINT(77.2097 28.6133)', 4326),1);
 
 
---INSERT INTO wallet (users_id, balance) VALUES(
---(1, 500),
---(6, 500));
+INSERT INTO wallet (users_id, balance) VALUES
+(1, 500),
+(12, 500);

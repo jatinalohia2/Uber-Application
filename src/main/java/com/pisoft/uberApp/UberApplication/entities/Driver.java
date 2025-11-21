@@ -10,6 +10,10 @@ import org.locationtech.jts.geom.Point;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Table(indexes = {
+        @Index(name = "idx_driver_licNo" , columnList = "lic_no")
+})
 public class Driver {
 
     @Id

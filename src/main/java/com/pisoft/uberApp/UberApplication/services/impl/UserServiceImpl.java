@@ -6,7 +6,6 @@ import com.pisoft.uberApp.UberApplication.repositories.UserRepository;
 import com.pisoft.uberApp.UberApplication.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +15,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users getCurrentLoggedUser() {
-        return userRepository.findById(1L).orElseThrow(()->
+        return findById(1L);
+    }
+
+    @Override
+    public Users findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(()->
                 new ResourceNotFound("User not found with Id : "+1L));
+    }
+
+    @Override
+    public void save(Users users) {
+        userRepository.save(users);
     }
 }

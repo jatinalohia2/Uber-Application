@@ -1,24 +1,25 @@
 package com.pisoft.uberApp.UberApplication.services.impl;
 
+import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
+import com.pisoft.uberApp.UberApplication.dtos.DriverOnboardDto;
 import com.pisoft.uberApp.UberApplication.dtos.SignUpDto;
 import com.pisoft.uberApp.UberApplication.dtos.UserDto;
-import com.pisoft.uberApp.UberApplication.entities.Rider;
+import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Users;
-import com.pisoft.uberApp.UberApplication.entities.Wallet;
 import com.pisoft.uberApp.UberApplication.enums.Roles;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
-import com.pisoft.uberApp.UberApplication.repositories.RiderRepository;
 import com.pisoft.uberApp.UberApplication.repositories.UserRepository;
-import com.pisoft.uberApp.UberApplication.repositories.WalletRepository;
-import com.pisoft.uberApp.UberApplication.services.AuthService;
-import com.pisoft.uberApp.UberApplication.services.RiderService;
-import com.pisoft.uberApp.UberApplication.services.WalletService;
+import com.pisoft.uberApp.UberApplication.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.Set;
+
+import static com.pisoft.uberApp.UberApplication.enums.Roles.DRIVER;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RiderService riderService ;
     private final WalletService walletService;
+    private final UserService userService;
+    private final DriverService driverService;
 
 
     @Override
@@ -60,5 +63,31 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logOut(Long userId) {
 
+    }
+
+    @Override
+    public DriverDto onBoardNewDriver(Long userId, DriverOnboardDto driverOnboardDto) {
+
+        Users users = userService.findById(userId);
+
+        if (users.getRoles().contains(DRIVER)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST ,
+                    "User is already exist as a DRIVER role");
+        }
+
+        Driver driver = Driver
+                .builder()
+                .available(true)
+                .averageRating(0.0)
+                .licNo(driverOnboardDto.getLicNo())
+                .totalRating(0)
+                .users(users)
+                .build();
+
+        Driver driver1 = driverService.onBoardNewDriver(driver);
+
+        users.getRoles().add(DRIVER);
+        userService.save(users);
+        return modelMapper.map(driver1, DriverDto.class);
     }
 }

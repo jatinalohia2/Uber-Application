@@ -1,7 +1,6 @@
 package com.pisoft.uberApp.UberApplication.services.impl;
 
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
-import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
 import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Ride;
 import com.pisoft.uberApp.UberApplication.entities.RideRequest;
@@ -11,12 +10,10 @@ import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.DriverRepository;
 import com.pisoft.uberApp.UberApplication.repositories.RideRepository;
-import com.pisoft.uberApp.UberApplication.services.DriverService;
 import com.pisoft.uberApp.UberApplication.services.RideService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

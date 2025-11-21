@@ -1,6 +1,5 @@
 package com.pisoft.uberApp.UberApplication.services.impl;
 
-import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
 import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
@@ -10,7 +9,8 @@ import com.pisoft.uberApp.UberApplication.entities.Users;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.repositories.RideRequestRepository;
 import com.pisoft.uberApp.UberApplication.repositories.RiderRepository;
-import com.pisoft.uberApp.UberApplication.services.*;
+import com.pisoft.uberApp.UberApplication.services.RideService;
+import com.pisoft.uberApp.UberApplication.services.RiderService;
 import com.pisoft.uberApp.UberApplication.strategies.RideStrategyManager;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -64,11 +64,6 @@ public class RiderServiceImpl implements RiderService {
     }
 
     @Override
-    public DriverDto rateDriver(Long driverId, Double rating) {
-        return null;
-    }
-
-    @Override
     public RiderDto getMyProfile() {
         Rider currentRider = getCurrentRider();
         return modelMapper.map(currentRider, RiderDto.class);
@@ -82,8 +77,6 @@ public class RiderServiceImpl implements RiderService {
 
         return rideService.getAllRidesOfRider(currentRider, pageable).map((
                 element) -> modelMapper.map(element, RideDto.class));
-
-
     }
 
 

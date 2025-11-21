@@ -1,7 +1,6 @@
 package com.pisoft.uberApp.UberApplication.entities;
 
 import com.pisoft.uberApp.UberApplication.enums.PaymentMethod;
-import com.pisoft.uberApp.UberApplication.enums.PaymentStatus;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +15,9 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "idx_ride_request_rider" , columnList = "rider_id")
+})
 public class RideRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

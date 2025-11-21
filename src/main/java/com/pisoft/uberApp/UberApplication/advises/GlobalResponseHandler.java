@@ -9,6 +9,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.List;
+
 @RestControllerAdvice
 public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     @Override
@@ -22,19 +24,16 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public Object beforeBodyWrite(Object body, MethodParameter returnType,
+                                  MediaType selectedContentType, Class<? extends HttpMessageConverter<?>>
+                                              selectedConverterType,
+                                  ServerHttpRequest request, ServerHttpResponse response) {
 
-        // 🚫 Skip Swagger and OpenAPI endpoints
+        List<String> urlList = List.of("/v3/api-docs" , "/swagger-ui/index.html");
         String path = request.getURI().getPath();
+        boolean anyMatch = urlList.stream() .anyMatch(path::startsWith);
 
-        System.out.println("path : "+path);
-
-        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui") || path.startsWith("/actuator")) {
-            System.out.println("entering in this ");
-            return body; // don’t wrap
-        }
-
-        if (body instanceof ApiResponse<?>){
+        if (body instanceof ApiResponse<?> || anyMatch){
             return body;
         }
         return new ApiResponse<>(body);

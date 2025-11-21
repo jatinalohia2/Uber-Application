@@ -1,6 +1,7 @@
 package com.pisoft.uberApp.UberApplication.contollers;
 
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
+import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
 import com.pisoft.uberApp.UberApplication.services.RiderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,5 +21,10 @@ public class RiderController {
     @GetMapping("/getAllMyRides/{pageNo}")
     public List<RideDto> getAllMyRides(@RequestParam(defaultValue = "0") int pageNo){
         return riderService.getAllMyRides(pageNo).getContent();
+    }
+
+    @GetMapping("/getMyProfile")
+    public RiderDto getMyProfile(){
+        return riderService.getMyProfile();
     }
 }
