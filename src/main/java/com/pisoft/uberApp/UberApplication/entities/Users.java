@@ -3,8 +3,14 @@ package com.pisoft.uberApp.UberApplication.entities;
 import com.pisoft.uberApp.UberApplication.enums.Roles;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -12,7 +18,8 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+@Builder
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -22,7 +29,7 @@ public class Users {
     private String email;
     private String password;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
@@ -32,7 +39,21 @@ public class Users {
     @OneToOne(mappedBy = "users")
     private Driver driver;
 
-    
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(roles1 -> new SimpleGrantedAuthority("ROLE_"+roles1.name()))
+                .collect(Collectors.toSet());
+    }
 
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 }

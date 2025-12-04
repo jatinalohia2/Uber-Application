@@ -7,11 +7,13 @@ import com.pisoft.uberApp.UberApplication.entities.RideRequest;
 import com.pisoft.uberApp.UberApplication.entities.Rider;
 import com.pisoft.uberApp.UberApplication.entities.Users;
 import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
+import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.RideRequestRepository;
 import com.pisoft.uberApp.UberApplication.repositories.RiderRepository;
 import com.pisoft.uberApp.UberApplication.services.RideService;
 import com.pisoft.uberApp.UberApplication.services.RiderService;
 import com.pisoft.uberApp.UberApplication.strategies.RideStrategyManager;
+import com.pisoft.uberApp.UberApplication.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,8 +85,9 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public Rider getCurrentRider() {
-        //TODO : we have not implement spring sec. to get current logged user :
-        return riderRepository.findById(1L).orElse(null);
+        Users users = AuthUtils.getCurrentLoggedUser();
+        return riderRepository.findById(users.getRider().getId()).orElseThrow(()->
+                new ResourceNotFound("Rider is not found with id"+users.getRider().getId()));
     }
 
     @Override

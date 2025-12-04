@@ -17,6 +17,5 @@ public interface DriverService {
     Page<RideDto> getAllMyRides(int pageNo);
     boolean existsByUsersId(Long userId);
     void updateRating(Long userId, Double rating);
-
     Driver onBoardNewDriver(Driver driver);
 }

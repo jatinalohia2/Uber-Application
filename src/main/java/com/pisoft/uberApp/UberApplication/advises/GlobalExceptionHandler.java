@@ -1,12 +1,15 @@
 package com.pisoft.uberApp.UberApplication.advises;
 
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,6 +63,49 @@ public class GlobalExceptionHandler {
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .message(e.getMessage())
                 .errors(List.of("Something went wrong"))
+                .build();
+
+        return BuildResponseHanlder(apiError);
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<?>> accessDeniedException(AccessDeniedException e) {
+
+        ApiError apiError = ApiError.builder()
+
+                .localDateTime(LocalDateTime.now())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message("Jwt Exception")
+                .errors(List.of(e.getMessage()))
+                .build();
+
+        return BuildResponseHanlder(apiError);
+    }
+
+        @ExceptionHandler(JwtException.class)
+        public ResponseEntity<ApiResponse<?>> authenticationException(JwtException e) {
+
+            ApiError apiError = ApiError.builder()
+
+                    .localDateTime(LocalDateTime.now())
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message("Jwt Exception")
+                    .errors(List.of(e.getMessage()))
+                    .build();
+
+            return BuildResponseHanlder(apiError);
+        }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<?>> authenticationException(AuthenticationException e) {
+
+        ApiError apiError = ApiError.builder()
+
+                .localDateTime(LocalDateTime.now())
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .message("UnAuthorized")
+                .errors(List.of(e.getMessage()))
                 .build();
 
         return BuildResponseHanlder(apiError);

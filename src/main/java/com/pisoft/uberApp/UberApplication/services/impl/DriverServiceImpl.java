@@ -9,6 +9,7 @@ import com.pisoft.uberApp.UberApplication.enums.RideStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.DriverRepository;
 import com.pisoft.uberApp.UberApplication.services.*;
+import com.pisoft.uberApp.UberApplication.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +62,6 @@ public class DriverServiceImpl implements DriverService {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE ,
                     "Driver cannot accept the ride because of less than  "+MINIMUM_DRIVER_BALANCE);
         }
-
 
         if (!rideRequest.getRideRequestStatus().equals(RideRequestStatus.PENDING)){
             throw new RuntimeException("Ride Request cannot be accpeted because it is not im pemding state");
@@ -152,8 +152,9 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getCurrentDriver() {
-        return driverRepository.findById(6L).orElseThrow(()->
-                new ResourceNotFound("Driver not found with id" +1L));
+        Users users = AuthUtils.getCurrentLoggedUser();
+        return driverRepository.findById(users.getDriver().getId()).orElseThrow(()->
+                new ResourceNotFound("Rider is not found with id"+users.getDriver().getId()));
     }
 
     @Override
@@ -164,8 +165,7 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public Page<RideDto> getAllMyRides(int pageNo) {
 
-         Pageable pageable = PageRequest.of(pageNo , PAGE_SIZE);
-
+        Pageable pageable = PageRequest.of(pageNo , PAGE_SIZE);
 
         Driver currentDriver = getCurrentDriver();
         return rideService.getAllRidesOfDriver(currentDriver, pageable).map((
@@ -179,7 +179,6 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public void updateRating(Long userId, Double rating) {
-        System.out.println("dddddddddddddd : "+userId +" "+rating);
         driverRepository.updateRating(userId , rating);
     }
 

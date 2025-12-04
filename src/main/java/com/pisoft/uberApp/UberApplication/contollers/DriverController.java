@@ -51,9 +51,9 @@ public class DriverController {
         return ResponseEntity.ok(driverService.getMyProfile());
     }
 
-    @PostMapping("/onBoardNewDriver/{userId}")
-    public ResponseEntity<DriverDto> onBoardNewDriver(@PathVariable Long userId , @RequestBody DriverOnboardDto driverOnboardDto){
-        DriverDto driverDto = authService.onBoardNewDriver(userId, driverOnboardDto);
+    @PostMapping("/onBoardNewDriver")
+    public ResponseEntity<DriverDto> onBoardNewDriver(@RequestBody DriverOnboardDto driverOnboardDto){
+        DriverDto driverDto = authService.onBoardNewDriver(driverOnboardDto);
         return new ResponseEntity<>(driverDto , HttpStatus.CREATED);
     }
 

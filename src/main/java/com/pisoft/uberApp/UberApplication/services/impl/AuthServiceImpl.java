@@ -1,9 +1,6 @@
 package com.pisoft.uberApp.UberApplication.services.impl;
 
-import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
-import com.pisoft.uberApp.UberApplication.dtos.DriverOnboardDto;
-import com.pisoft.uberApp.UberApplication.dtos.SignUpDto;
-import com.pisoft.uberApp.UberApplication.dtos.UserDto;
+import com.pisoft.uberApp.UberApplication.dtos.*;
 import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.Users;
 import com.pisoft.uberApp.UberApplication.enums.Roles;
@@ -13,6 +10,10 @@ import com.pisoft.uberApp.UberApplication.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,6 +32,11 @@ public class AuthServiceImpl implements AuthService {
     private final WalletService walletService;
     private final UserService userService;
     private final DriverService driverService;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final UserSessionService userSessionService;
+    private final PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -45,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
         // user creation :
         Users users = modelMapper.map(signUpDto, Users.class);
         users.setRoles(Set.of(Roles.RIDER));
+        users.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
         Users saveUser = userRepository.save(users);
 
         // rider creation :
@@ -56,8 +63,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDto login(String email, String password) {
-        return null;
+    public LoginResponseDto login(LoginDto loginDto) {
+
+        Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getEmail(), loginDto.getPassword()
+                )
+        );
+        Users users = (Users) authenticate.getPrincipal();
+        String accessToken = jwtService.generateAccessToken(users);
+        String refreshToken = jwtService.generateRefreshToken(users);
+
+        userSessionService.generateUserSession(users , refreshToken);
+        return new LoginResponseDto(users.getId() , accessToken , refreshToken);
     }
 
     @Override
@@ -66,9 +84,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public DriverDto onBoardNewDriver(Long userId, DriverOnboardDto driverOnboardDto) {
+    public DriverDto onBoardNewDriver(DriverOnboardDto driverOnboardDto) {
 
-        Users users = userService.findById(userId);
+        Users users = userService.getCurrentLoggedUser();
 
         if (users.getRoles().contains(DRIVER)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST ,
@@ -89,5 +107,15 @@ public class AuthServiceImpl implements AuthService {
         users.getRoles().add(DRIVER);
         userService.save(users);
         return modelMapper.map(driver1, DriverDto.class);
+    }
+
+    public LoginResponseDto generateAccessToken(String refreshToken) {
+
+        Long userIdFromToken = jwtService.generateUserIdFromToken(refreshToken);
+        userSessionService.validateUserSession(refreshToken);
+        Users users = userService.findById(userIdFromToken);
+
+        String accessToken = jwtService.generateAccessToken(users);
+        return new LoginResponseDto(users.getId() , accessToken , refreshToken);
     }
 }

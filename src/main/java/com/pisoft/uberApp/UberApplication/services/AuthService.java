@@ -1,18 +1,16 @@
 package com.pisoft.uberApp.UberApplication.services;
 
-import com.pisoft.uberApp.UberApplication.dtos.DriverDto;
-import com.pisoft.uberApp.UberApplication.dtos.DriverOnboardDto;
-import com.pisoft.uberApp.UberApplication.dtos.SignUpDto;
-import com.pisoft.uberApp.UberApplication.dtos.UserDto;
+import com.pisoft.uberApp.UberApplication.dtos.*;
 
 public interface AuthService {
 
     UserDto signUp(SignUpDto signUpDto);
 
-    UserDto login(String email , String password);
+    LoginResponseDto login(LoginDto loginDto);
 
     void logOut(Long userId); // spring security :
 
-    DriverDto onBoardNewDriver(Long userId, DriverOnboardDto driverOnboardDto);
+    DriverDto onBoardNewDriver(DriverOnboardDto driverOnboardDto);
 
+    LoginResponseDto generateAccessToken(String refreshToken);
 }
