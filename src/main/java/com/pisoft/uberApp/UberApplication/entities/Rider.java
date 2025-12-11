@@ -29,7 +29,4 @@ public class Rider {
     private Double averageRating;
     private Integer totalRating;
 
-
-
-
 }

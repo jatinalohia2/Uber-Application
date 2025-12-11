@@ -3,6 +3,7 @@ package com.pisoft.uberApp.UberApplication.services.impl;
 import com.pisoft.uberApp.UberApplication.dtos.RideDto;
 import com.pisoft.uberApp.UberApplication.dtos.RideRequestDto;
 import com.pisoft.uberApp.UberApplication.dtos.RiderDto;
+import com.pisoft.uberApp.UberApplication.entities.Driver;
 import com.pisoft.uberApp.UberApplication.entities.RideRequest;
 import com.pisoft.uberApp.UberApplication.entities.Rider;
 import com.pisoft.uberApp.UberApplication.entities.Users;
@@ -10,6 +11,7 @@ import com.pisoft.uberApp.UberApplication.enums.RideRequestStatus;
 import com.pisoft.uberApp.UberApplication.exception.ResourceNotFound;
 import com.pisoft.uberApp.UberApplication.repositories.RideRequestRepository;
 import com.pisoft.uberApp.UberApplication.repositories.RiderRepository;
+import com.pisoft.uberApp.UberApplication.services.EmailService;
 import com.pisoft.uberApp.UberApplication.services.RideService;
 import com.pisoft.uberApp.UberApplication.services.RiderService;
 import com.pisoft.uberApp.UberApplication.strategies.RideStrategyManager;
@@ -23,6 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RiderServiceImpl implements RiderService {
@@ -32,6 +36,7 @@ public class RiderServiceImpl implements RiderService {
     private final RiderRepository riderRepository;
     private final RideStrategyManager rideStrategyManager;
     private final RideService rideService;
+    private final EmailService emailService;
 
     @Value("${PAGE_SIZE}")
     Integer PAGE_SIZE;
@@ -54,8 +59,8 @@ public class RiderServiceImpl implements RiderService {
         RideRequest saveRideRequest = rideRequestRepository.save(rideRequest);
 
         // matching Drivers :
-        // TODO email is remaining....
-        rideStrategyManager.findMatchingDriver(currentRider.getAverageRating()).matchDrivers(rideRequest);
+        List<Driver> drivers = rideStrategyManager.findMatchingDriver(currentRider.getAverageRating()).matchDrivers(rideRequest);
+        emailService.sendEmail(drivers);
 
         return convertRideReqToRideReqDto(rideRequest);
     }

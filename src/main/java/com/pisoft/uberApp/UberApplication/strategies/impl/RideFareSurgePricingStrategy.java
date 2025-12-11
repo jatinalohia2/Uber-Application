@@ -14,7 +14,7 @@ public class RideFareSurgePricingStrategy implements RideFareCalculationStrategy
     private final DistanceService distanceService;
 
     @Value("${RIDE_PER_KM_SURGE_CHARGES}")
-    private double RIDE_PER_KM_SURGE_CHARGES;
+    private Double RIDE_PER_KM_SURGE_CHARGES ;
 
     @Override
     public Double calculateFare(RideRequest rideRequest) {
