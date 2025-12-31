@@ -53,11 +53,10 @@ public class RideRatingServiceImpl implements RideRatingService {
         boolean isRider = currentLoggedUser.getId().equals(ride.getRider().getUsers().getId());
 
         if (!isDriver && !isRider){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN , "you are not part of this ride ");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"you are not part of this ride");
         }
 
         Users rated = isDriver ? ride.getRider().getUsers() : ride.getDriver().getUsers();
-
             // 1  !=  12
         if (currentLoggedUser.getId().equals(rated.getId())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN , "you cannot rate yourself ");

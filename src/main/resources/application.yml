@@ -1,14 +1,75 @@
-spring :
+#spring :
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google.client-id: dfgdfgdfgfdgfdgent.com
+#          google.client-secret: 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Z2_PlTdRnLgi9j
+#
+#          github.client-id: isdhioashdoashdadasdahdhhdasod
+#          github.client-secret: dasdasd
+#
+#          facebook.client-id: adssdasda
+#          facebook.client-secret: asdadasdads
+#
+
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: uber-application
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+
   security:
     oauth2:
       client:
         registration:
-          google.client-id: dfgdfgdfgfdgfdgent.com
-          google.client-secret: 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Lgi9j
 
-          github.client-id: isdhioashdoashdahdhhdasod
-          github.client-secret: isdhioashdoashdahdhhdasod
+          google:
+            client-id: dfgdfgdfgfdgfdgent.com
+            client-secret: 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Lgi9j
+#            scope:
+#              - email
+#              - profile
 
-          facebook.client-id: idhoaasidhoidhaoshddisodhaiso
-          facebook.client-secret: idhoaasidhoidhaoshddisodhaiso
+          github:
+            client-id: isdhioashdoashdahdhhdasod
+            client-secret: isdhioashdoashdahdhhdasod
+#            scope:
+#              - user:email
+#              - read:user
+
+          facebook:
+            client-id: idhoaasidhoidhaoshddisodhaiso
+            client-secret: idhoaasidhoidhaoshddisodhaiso
+#            scope:
+#              - email
+#              - public_profile
+
+        provider:
+          facebook:
+            authorization-uri: https://www.facebook.com/v18.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v18.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+            user-name-attribute: id
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
 

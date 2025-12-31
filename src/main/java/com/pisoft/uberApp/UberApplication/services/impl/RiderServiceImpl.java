@@ -60,7 +60,7 @@ public class RiderServiceImpl implements RiderService {
 
         // matching Drivers :
         List<Driver> drivers = rideStrategyManager.findMatchingDriver(currentRider.getAverageRating()).matchDrivers(rideRequest);
-        emailService.sendEmail(drivers);
+//        emailService.sendEmail(drivers);
 
         return convertRideReqToRideReqDto(rideRequest);
     }

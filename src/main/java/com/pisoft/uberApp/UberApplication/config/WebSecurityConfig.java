@@ -6,7 +6,9 @@ import com.pisoft.uberApp.UberApplication.handler.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,13 +27,24 @@ public class WebSecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    public static final String[] PUBLIC_ROUTES = {"/auth/signUp" , "/auth/login" , "/swagger-ui/index.html" , "/v3/api-docs/**" , "/swagger-ui/**"};
+    public static final String[] PUBLIC_ROUTES = {"/auth/signUp" ,
+            "/auth/login" ,
+            "/swagger-ui/index.html" ,
+            "/v3/api-docs/**" ,
+            "/swagger-ui/**" ,
+            "/auth/refreshToken",
+    };
 
     @Bean
     public SecurityFilterChain getSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.authorizeHttpRequests(auth->
+        httpSecurity
+        // ✅ ENABLE CORS (THIS WAS MISSING)
+        .cors(Customizer.withDefaults())
+                .
+                authorizeHttpRequests(auth->
                 auth.requestMatchers(PUBLIC_ROUTES).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/driver/onBoardNewDriver").hasRole(Roles.RIDER.name())
                         .requestMatchers("/driver/**").hasRole(Roles.DRIVER.name())
                         .requestMatchers("/rider/**" , "/ride/**").hasRole(Roles.RIDER.name())

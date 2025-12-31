@@ -2,6 +2,7 @@ package com.pisoft.uberApp.UberApplication.services;
 
 import com.pisoft.uberApp.UberApplication.entities.Users;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ public class JwtService {
                 .setSubject(users.getId().toString())
                 .claim("email", users.getUsername())
                 .claim("roles", users.getRoles().toString())
-                .signWith(getSecretKey())
+                .signWith(getSecretKey() , SignatureAlgorithm.HS256)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60)) // 1 min
                 .compact();
