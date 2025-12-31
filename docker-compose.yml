@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.4
+    container_name: uber-postgres
+    environment:
+      POSTGRES_DB: uberdb
+      POSTGRES_USER: uber
+      POSTGRES_PASSWORD: uber123
+    ports:
+      - "5432:5432"
+
+  springboot-app:
+    build: .
+    container_name: uber-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/uberdb
+      SPRING_DATASOURCE_USERNAME: uber
+      SPRING_DATASOURCE_PASSWORD: uber123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
